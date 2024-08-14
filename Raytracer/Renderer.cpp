@@ -28,7 +28,7 @@
 #define Epsilon 0.0005
 
 
-unsigned int __popcount_tab_[] = {
+unsigned int __popcount_tab_[] = { // de basics.cpp
 0,1,1,2,1,2,2,3,1,2,2,3,2,3,3,4,1,2,2,3,2,3,3,4,2,3,3,4,3,4,4,5,
 1,2,2,3,2,3,3,4,2,3,3,4,3,4,4,5,2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,
 1,2,2,3,2,3,3,4,2,3,3,4,3,4,4,5,2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,
@@ -67,7 +67,7 @@ void Renderer::writeVec(std::vector<int32_t>& vec) {
 	
 }
 
-void transformAABB( int& childrenIndex, AABB& box) {
+void transformAABB( int& childrenIndex, AABB& box) {// tambien parte de test funcion gpu en cpu
 	for (int i = 0; i < box.size.size(); i++){
 		box.size[i] /= 2;
 	}
@@ -162,12 +162,12 @@ void Renderer::loadSVO(SVO& svo) {
 	int count = 0;
 
 	FTRep* dac = createFT(svdag, svdag.size());
-	uint * base_bitsGpu = (uint*)malloc(sizeof(uint) * dac->nLevels); // necesario para us oen gpu
+	uint * base_bitsGpu = (uint*)malloc(sizeof(uint) * dac->nLevels); // necesario para uso en gpu
 
-	/*for (int i = 0; i < dac->nLevels; i++) {
+	for (int i = 0; i < dac->nLevels; i++) {
 		base_bitsGpu[i] = (uint)dac->base_bits[i];
-		std::cout << " bb GPU: " << base_bitsGpu[i] << " bb dac: " << dac->base_bits[i]<<std::endl;
-	}*/
+		//std::cout << " bb GPU: " << base_bitsGpu[i] << " bb dac: " << dac->base_bits[i]<<std::endl;
+	}
 	
 	bitRankDac* bitRank_gpu = (bitRankDac*)malloc(sizeof(struct sbitRank_DAC));
 	bitRank_gpu->b = dac->bS->b;
@@ -230,13 +230,6 @@ void Renderer::loadSVO(SVO& svo) {
 	if (bitRankBuffer) glDeleteBuffers(1, &bitRankBuffer);
 	if (popcountBuffer) glDeleteBuffers(1, &popcountBuffer);
 	
-	
-
-	// 
-	//glCreateBuffers(1, &svdagBuffer);
-	//glNamedBufferStorage(svdagBuffer, svdag.size() * sizeof(int32_t), svdag.data(), 0); // carga svdag a opengl
-	//glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, svdagBuffer);
-
 	glCreateBuffers(1, &materialsBuffer);
 	glNamedBufferStorage(materialsBuffer, materials.size() * sizeof(SVO::Material), materials.data(), 0); // pasa materiales a opengl
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, materialsBuffer);
@@ -349,7 +342,7 @@ void Renderer::init() noexcept { // utiliza svo load revisalo
 	glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);// comina con el vertex shader de afuera
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);//  vertex shader 
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 
@@ -367,9 +360,9 @@ void Renderer::init() noexcept { // utiliza svo load revisalo
 	
 
 	loadScenes();
-	loadSVO(*(scenes[0]->load(0)));
-	//loadSVO(*(scenes[6]->load(32))); // load the first scene
-	//camRead();
+	loadSVO(*(scenes[0]->load(0))); // load primera escena
+	//loadSVO(*(scenes[6]->load(32)));
+	//camRead(); // funcion para leer text.txt posee mov camara
 }
 
 void Renderer::renderUI() noexcept { //
@@ -563,7 +556,7 @@ static vec3 rotate(float theta, const vec3& v, const vec3& w) {//rotaciones de c
 	return v0 + c * v1 + s * v2;
 }
 
-void Renderer::update() noexcept { //automatizaxion
+void Renderer::update() noexcept { //automatizacion
 
 	float speed = keyPressed['X'] ? 1.f : 0.1f;
 	if (keyPressed['C']) speed *= 100;

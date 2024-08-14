@@ -149,7 +149,7 @@ uint accessFT_Dac(in uint param) {//args originales FTRep* listRep, uint param, 
 	uint partialSum = 0;
 	
     //uint nLevels = listRep->nLevels;
-	//uint* level; es un vector pero se pasa a gpu asique se puede usar igual
+	//uint* level;
 	
     uint readByte;
 	uint cont, pos, rankini;

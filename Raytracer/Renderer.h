@@ -54,8 +54,8 @@ private:
 	//camarapos, camarafront 
 	std::vector<glm::vec3> camPos;
 	std::vector<glm::vec3> camFro;
-	int posi = 1;
-	bool camaraFlag = false;
+	int posi = 1; // determina las 20 pasadas de la camara
+	bool camaraFlag = false; // flag para terminar con mov de camara utilizado para grabar nuevos mov de camara
 
 	bool mouseClicked = false;
 	glm::vec2 lastMousePos = { 0.0f, 0.0f };
